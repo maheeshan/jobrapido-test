@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/command"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "commands.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

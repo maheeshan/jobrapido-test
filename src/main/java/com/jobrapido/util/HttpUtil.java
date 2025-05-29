@@ -1,16 +1,19 @@
 package com.jobrapido.util;
 
+import lombok.RequiredArgsConstructor;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+@RequiredArgsConstructor
 public class HttpUtil {
 
-    private static final HttpClient client = HttpClient.newHttpClient();
+    private final HttpClient client;
 
-    public static String fetchJson(String url) throws IOException, InterruptedException {
+    public String fetchJson(String url) throws IOException, InterruptedException {
 
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

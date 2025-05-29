@@ -1,50 +1,42 @@
 package com.jobrapido;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jobrapido.config.AppConfig;
 import com.jobrapido.exception.GenericException;
-import com.jobrapido.model.*;
-import com.jobrapido.service.KnightService;
+import com.jobrapido.model.ApplicationOutput;
+import com.jobrapido.model.OutputStatus;
 import com.jobrapido.util.HttpUtil;
+
+import java.net.http.HttpClient;
 
 public class Main {
     public static void main(String[] args) {
 
+        var mapper = new ObjectMapper();
+        var httpUtil = new HttpUtil(HttpClient.newHttpClient());
+        var appConfig = new AppConfig();
+        var app = new MoveYourKnightApplication(mapper, httpUtil, appConfig);
+
         try {
-            //init env var
-            var boardApi = System.getenv("BOARD_API");
-            var commandsApi = System.getenv("COMMANDS_API");
-
-            if (boardApi == null || commandsApi == null) {
-                System.err.println("Missing environment variables");
-                System.exit(1);
-            }
-
-            //extract json
-            var boardJson = HttpUtil.fetchJson(boardApi);
-            var commandsJson = HttpUtil.fetchJson(commandsApi);
-
-            var mapper = new ObjectMapper();
-            var board = mapper.readValue(boardJson, Board.class);
-            var commands = mapper.readValue(commandsJson, CommandList.class);
-            var knight = new Knight(board);
-
-            // Process with service
-            var service = new KnightService(knight);
-            var output = service.execute(commands);
-
-            // Output final JSON
+            var output = app.run();
             System.out.println(mapper.writeValueAsString(output));
-        } catch (GenericException genericException) {
-            var applicationOutput = new ApplicationOutput();
-            applicationOutput.setStatus(genericException.getCode());
-            System.err.println(applicationOutput);
+        } catch (GenericException ge) {
+            var errorOutput = new ApplicationOutput();
+            errorOutput.setStatus(ge.getCode());
+            System.out.println(toJson(mapper, errorOutput));
         } catch (Exception e) {
-            var applicationOutput = new ApplicationOutput();
-            applicationOutput.setStatus(OutputStatus.GENERIC_ERROR);
-            System.err.println(applicationOutput);
-            System.exit(1);
+            var errorOutput = new ApplicationOutput();
+            errorOutput.setStatus(OutputStatus.GENERIC_ERROR);
+            System.out.println(toJson(mapper, errorOutput));
         }
-
-        System.out.println("Lets Move your Knight!");
     }
+
+    private static String toJson(ObjectMapper mapper, Object obj) {
+        try {
+            return mapper.writeValueAsString(obj);
+        } catch (Exception e) {
+            return "{\"status\":\"" + OutputStatus.GENERIC_ERROR + "\"}";
+        }
+    }
+
 }

@@ -5,9 +5,11 @@ import com.jobrapido.exception.OutOfTheBoardException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
 @RequiredArgsConstructor
+@Slf4j
 public class Knight {
 
     private final Board board;
@@ -24,19 +26,24 @@ public class Knight {
     }
 
     @SneakyThrows
-    public void move(int steps) {
+    public int move(int steps) {
+        var executedSteps = 0;
         for (int i = 0; i < steps; i++) {
             var next = position.copy();
             next.advance();
+
+            if (board.isPositionHasObstacle(next)) {
+                log.info("Obstacle met at: {}", next);
+                break;
+            }
+
             if (!board.isValidPosition(next)) {
                 throw new OutOfTheBoardException();
             }
-
-            if (board.isPositionHasObstacle(next)) {
-                break;
-            }
             this.position = next;
+            executedSteps++;
         }
+        return executedSteps;
     }
 
 }

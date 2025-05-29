@@ -1,13 +1,13 @@
 package com.jobrapido.model;
 
 public enum Direction {
-    NORTH, SOUTH, EST, WEST;
+    NORTH, SOUTH, EAST, WEST;
 
     public static Direction fromString(String s) {
         return switch (s.toUpperCase()) {
             case "NORTH" -> NORTH;
             case "SOUTH" -> SOUTH;
-            case "EST" -> EST;
+            case "EAST" -> EAST;
             case "WEST" -> WEST;
             default -> throw new IllegalArgumentException("Invalid direction: " + s);
         };
