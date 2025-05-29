@@ -1,5 +1,5 @@
 {
-  "commands":[
+  "commands": [
     "START 3,7,SOUTH",
     "MOVE 4",
     "ROTATE WEST",

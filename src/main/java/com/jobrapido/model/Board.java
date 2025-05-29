@@ -15,7 +15,11 @@ public class Board {
     private List<Position> obstacles;
 
     public boolean isValidPosition(Position position) {
-        return position.getX() <= this.width && position.getY() <= this.height;
+        return
+                position.getX() >= 0 &&
+                        position.getX() <= this.width &&
+                        position.getY() >= 0 &&
+                        position.getY() <= this.height;
     }
 
     public boolean isPositionHasObstacle(Position position) {

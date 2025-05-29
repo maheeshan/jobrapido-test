@@ -83,8 +83,8 @@
                 <version>3.2.5</version>
                 <configuration>
                     <environmentVariables>
-                        <BOARD_API>http://localhost:8080/board</BOARD_API>
-                        <COMMANDS_API>http://localhost:8080/commands</COMMANDS_API>
+                        <BOARD_API>http://localhost:8081/board</BOARD_API>
+                        <COMMANDS_API>http://localhost:8081/commands</COMMANDS_API>
                     </environmentVariables>
                 </configuration>
             </plugin>

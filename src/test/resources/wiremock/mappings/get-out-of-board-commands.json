@@ -1,11 +1,11 @@
 {
   "request": {
     "method": "GET",
-    "url": "/command"
+    "url": "/commands"
   },
   "response": {
     "status": 200,
-    "bodyFileName": "commands.json",
+    "bodyFileName": "commands-out-of-board.json",
     "headers": {
       "Content-Type": "application/json"
     }

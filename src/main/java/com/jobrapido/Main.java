@@ -11,7 +11,10 @@ import java.net.http.HttpClient;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println(runApp());
+    }
 
+    public static String runApp() {
         var mapper = new ObjectMapper();
         var httpUtil = new HttpUtil(HttpClient.newHttpClient());
         var appConfig = new AppConfig();
@@ -19,17 +22,18 @@ public class Main {
 
         try {
             var output = app.run();
-            System.out.println(mapper.writeValueAsString(output));
+            return mapper.writeValueAsString(output);
         } catch (GenericException ge) {
             var errorOutput = new ApplicationOutput();
             errorOutput.setStatus(ge.getCode());
-            System.out.println(toJson(mapper, errorOutput));
+            return toJson(mapper, errorOutput);
         } catch (Exception e) {
             var errorOutput = new ApplicationOutput();
             errorOutput.setStatus(OutputStatus.GENERIC_ERROR);
-            System.out.println(toJson(mapper, errorOutput));
+            return toJson(mapper, errorOutput);
         }
     }
+
 
     private static String toJson(ObjectMapper mapper, Object obj) {
         try {
